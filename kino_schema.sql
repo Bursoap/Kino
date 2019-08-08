@@ -1,6 +1,6 @@
---  CREATE DATABASE kino;
+CREATE DATABASE movie_rental;
 
--- USE kino;
+USE movie_rental;
 
 CREATE TABLE country (
     id INT UNSIGNED AUTO_INCREMENT,
@@ -22,6 +22,7 @@ CREATE TABLE location (
 CREATE TABLE office (
     id INT UNSIGNED AUTO_INCREMENT,
     location_id INT UNSIGNED NOT NULL,
+    office_head_id INT UNSIGNED,
     name VARCHAR(100),
     CONSTRAINT pk_office PRIMARY KEY (id),
     CONSTRAINT fk_location_office FOREIGN KEY (location_id) REFERENCES location (id)
@@ -60,7 +61,8 @@ CREATE TABLE client (
     email VARCHAR(100),
     active BOOLEAN NOT NULL,
     CONSTRAINT pk_client PRIMARY KEY (id),
-    CONSTRAINT fk_person_client FOREIGN KEY (person_id) REFERENCES person (id)
+    CONSTRAINT fk_person_client FOREIGN KEY (person_id) REFERENCES person (id),
+    CONSTRAINT unique_person_client UNIQUE (person_id)
 );
 
 CREATE TABLE actor (
@@ -69,7 +71,8 @@ CREATE TABLE actor (
     biography TEXT,
     oscar BOOLEAN NOT NULL,
     CONSTRAINT pk_actor PRIMARY KEY (id),
-    CONSTRAINT fk_person_actor FOREIGN KEY (person_id) REFERENCES person (id)
+    CONSTRAINT fk_person_actor FOREIGN KEY (person_id) REFERENCES person (id),
+    CONSTRAINT unique_person_actor UNIQUE (person_id)
 );
 
 CREATE TABLE employee (
@@ -77,31 +80,26 @@ CREATE TABLE employee (
     person_id INT UNSIGNED NOT NULL,
     office_id INT UNSIGNED NOT NULL,
     dept_id INT UNSIGNED NOT NULL,
-    superior_id INT UNSIGNED,
     title VARCHAR(100) NOT NULL,
     salary DOUBLE(8, 2) NOT NULL,
     active BOOLEAN NOT NULL,
-    start_date DATE NOT NULL,
-    end_date DATE,
+    employment_date DATE NOT NULL,
+    dismiss_date DATE,
     CONSTRAINT pk_employee PRIMARY KEY (id),
     CONSTRAINT fk_person_employee FOREIGN KEY (person_id) REFERENCES person (id),
     CONSTRAINT fk_office_employee FOREIGN KEY (office_id) REFERENCES office (id),
     CONSTRAINT fk_department_employee FOREIGN KEY (dept_id) REFERENCES department (id),
-    CONSTRAINT fk_employee_superior FOREIGN KEY (superior_id) REFERENCES employee (id)
+    CONSTRAINT unique_person_employee UNIQUE (person_id)
 );
+
+ALTER TABLE office
+    ADD CONSTRAINT fk_employee_office_head FOREIGN KEY (office_head_id) REFERENCES employee (id);
 
 CREATE TABLE genre (
     id INT UNSIGNED AUTO_INCREMENT,
     name VARCHAR(50),
     CONSTRAINT pk_genre PRIMARY KEY (id),
     CONSTRAINT unique_genre_name UNIQUE (name)
-);
-
-CREATE TABLE language (
-    id INT UNSIGNED AUTO_INCREMENT,
-    name VARCHAR(20) NOT NULL,
-    CONSTRAINT pk_genre PRIMARY KEY (id),
-    CONSTRAINT unique_language_name UNIQUE (name)
 );
 
 CREATE TABLE film (
@@ -115,14 +113,6 @@ CREATE TABLE film (
     CONSTRAINT pk_film PRIMARY KEY (id),
     CONSTRAINT fk_person_film FOREIGN KEY (producer_id) REFERENCES person (id),
     CONSTRAINT fk_country_film FOREIGN KEY (country_id) REFERENCES country (id)
-);
-
-CREATE TABLE film_language (
-    film_id INT UNSIGNED NOT NULL,
-    language_id INT UNSIGNED NOT NULL,
-    CONSTRAINT pk_film_language PRIMARY KEY (film_id, language_id),
-    CONSTRAINT fk_film_film_language FOREIGN KEY (film_id) REFERENCES film (id),
-    CONSTRAINT fk_language_film_language FOREIGN KEY (language_id) REFERENCES language (id)
 );
 
 CREATE TABLE film_genre (
@@ -150,16 +140,25 @@ CREATE TABLE rating (
     CONSTRAINT fk_client_rating FOREIGN KEY (client_id) REFERENCES client (id)
 );
 
+CREATE TABLE translation (
+    id INT UNSIGNED AUTO_INCREMENT,
+    name VARCHAR(20) NOT NULL,
+    CONSTRAINT pk_translation PRIMARY KEY (id),
+    CONSTRAINT unique_translation_name UNIQUE (name)
+);
+
 CREATE TABLE copy (
     id INT UNSIGNED AUTO_INCREMENT,
     film_id INT UNSIGNED NOT NULL,
     office_id INT UNSIGNED NOT NULL,
+    translation_id INT UNSIGNED NOT NULL,
     price DOUBLE(4, 2) NOT NULL,
     stock INT UNSIGNED NOT NULL,
     CONSTRAINT pk_copy PRIMARY KEY (id),
     CONSTRAINT fk_film_copy FOREIGN KEY (film_id) REFERENCES film (id),
-    CONSTRAINT fk_office_film FOREIGN KEY (office_id) REFERENCES office (id),
-    CONSTRAINT unique_film_actor UNIQUE (film_id, office_id)
+    CONSTRAINT fk_office_copy FOREIGN KEY (office_id) REFERENCES office (id),
+    CONSTRAINT fk_translation_copy FOREIGN KEY (translation_id) REFERENCES translation (id),
+    CONSTRAINT unique_film_office_translation UNIQUE (film_id, office_id, translation_id)
 );
 
 CREATE TABLE deal (
@@ -168,9 +167,8 @@ CREATE TABLE deal (
     office_id INT UNSIGNED NOT NULL,
     open_emp_id INT UNSIGNED NOT NULL,
     total_earnings DOUBLE(8, 2) NOT NULL,
-    rent_date DATE NOT NULL,
-    back_date DATE,
-    closed BOOLEAN NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE,
     CONSTRAINT pk_deal PRIMARY KEY (id),
     CONSTRAINT fk_client_deal FOREIGN KEY (client_id) REFERENCES client (id),
     CONSTRAINT fk_office_deal FOREIGN KEY (office_id) REFERENCES office (id),

@@ -57,7 +57,7 @@ CREATE TABLE person (
 CREATE TABLE client (
     id INT UNSIGNED AUTO_INCREMENT,
     person_id INT UNSIGNED NOT NULL,
-    created DATETIME NOT NULL,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     email VARCHAR(100),
     active BOOLEAN NOT NULL,
     CONSTRAINT pk_client PRIMARY KEY (id),
@@ -83,7 +83,7 @@ CREATE TABLE employee (
     title VARCHAR(100) NOT NULL,
     salary DOUBLE(8, 2) NOT NULL,
     active BOOLEAN NOT NULL,
-    employment_date DATE NOT NULL,
+    employment_date DATE NOT NULL DEFAULT CURRENT_DATE,
     dismiss_date DATE,
     CONSTRAINT pk_employee PRIMARY KEY (id),
     CONSTRAINT fk_person_employee FOREIGN KEY (person_id) REFERENCES person (id),

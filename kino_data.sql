@@ -64,7 +64,7 @@ VALUES
     (1, 'Colorado', 'Denver', 'Dayton St', '630 S');
 
 # persons for employees
-INSERT INTO person (location_id, fname, lname, birth_date)
+INSERT INTO person (location_id, first_name, last_name, birth_date)
 VALUES
     (9, 'Jeremy', 'Smith', '1970-01-02'),
     (10, 'Andrew', 'Walker', '1989-05-16'),
@@ -78,18 +78,18 @@ VALUES
     (18, 'Jessica', 'Flower', '1993-05-09');
 
 # employee
-INSERT INTO employee (person_id, office_id, dept_id, title, salary, active, employment_date)
+INSERT INTO employee (person_id, office_id, dept_id, title, salary, employment_date)
 VALUES
-    (1, 1, 1, 'Boss', 5000.00, TRUE, '1994-02-01'),
-    (2, 1, 2, 'Manager', 3000.00, TRUE, '2004-05-07'),
-    (3, 1, 3, 'Seller', 2000.00, TRUE, '2008-09-16'),
-    (4, 1, 3, 'Seller', 2000.00, TRUE, '2009-11-06'),
-    (5, 2, 2, 'Manager', 3000.00, TRUE, '2005-04-15'),
-    (6, 2, 3, 'Seller', 2000.00, TRUE, '2008-10-07'),
-    (7, 2, 3, 'Seller', 2000.00, TRUE, '2009-08-23'),
-    (8, 3, 2, 'Manager', 3000.00, TRUE, '2009-12-11'),
-    (9, 3, 3, 'Seller', 2000.00, TRUE, '2010-05-17'),
-    (10, 3, 3, 'Seller', 2000.00, TRUE, '2011-07-27');
+    (1, 1, 1, 'Boss', 5000.00, '1994-02-01'),
+    (2, 1, 2, 'Manager', 3000.00, '2004-05-07'),
+    (3, 1, 3, 'Seller', 2000.00, '2008-09-16'),
+    (4, 1, 3, 'Seller', 2000.00, '2009-11-06'),
+    (5, 2, 2, 'Manager', 3000.00, '2005-04-15'),
+    (6, 2, 3, 'Seller', 2000.00, '2008-10-07'),
+    (7, 2, 3, 'Seller', 2000.00, '2009-08-23'),
+    (8, 3, 2, 'Manager', 3000.00, '2009-12-11'),
+    (9, 3, 3, 'Seller', 2000.00, '2010-05-17'),
+    (10, 3, 3, 'Seller', 2000.00, '2011-07-27');
 
 # Set office heads
 UPDATE office SET office_head_id = 2
@@ -136,7 +136,7 @@ VALUES
     (1, 'Colorado', 'Denver', '4th St', '200');
 
 # persons for clients
-INSERT INTO person (location_id, fname, lname, birth_date)
+INSERT INTO person (location_id, first_name, last_name, birth_date)
 VALUES
     (19, 'John', 'Boil', '1971-12-03'),
     (20, 'Robert', 'Pops', '1979-03-25'),
@@ -203,7 +203,7 @@ VALUES
     (39, 'client_29_rental@mail.ru', true),
     (40, 'client_30_rental@mail.ru', true);
 
-INSERT INTO person (fname, lname, birth_date)
+INSERT INTO person (first_name, last_name, birth_date)
 VALUES
     ('Billy Bob', 'Thornton', '1955-08-04'),
     ('James Eugene', 'Carrey', '1962-01-17'),
@@ -216,7 +216,7 @@ VALUES
     ('Mickey', 'Rourke', '1952-09-16'),
     ('Sylvester Enzio', 'Stallone', '1946-06-06');
 
-UPDATE person SET death_date = '2019-07-19' WHERE lname = 'Hauer';
+UPDATE person SET death_date = '2019-07-19' WHERE last_name = 'Hauer';
 
 INSERT INTO actor (person_id, biography, oscar)
 VALUES
@@ -253,7 +253,7 @@ VALUES
     ('Westerns'),
     ('War');
 
-INSERT INTO person (fname, lname, birth_date)
+INSERT INTO person (first_name, last_name, birth_date)
 VALUES
     ('Steven Allan', 'Spielberg', '1946-12-18'),
     ('Quentin Jerome', 'Tarantino', '1963-03-27'),

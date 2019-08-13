@@ -6,14 +6,6 @@ VALUES
     ('Spain'),
     ('India');
 
-INSERT INTO translation (name)
-VALUES
-    ('English'),
-    ('German'),
-    ('Russian'),
-    ('Spanish'),
-    ('Indian');
-
 # film studios
 INSERT INTO location (country_id, state, city)
 VALUES (1, 'California', 'Los Angeles');
@@ -210,3 +202,68 @@ VALUES
     (38, 'client_28_rental@mail.ru', true),
     (39, 'client_29_rental@mail.ru', true),
     (40, 'client_30_rental@mail.ru', true);
+
+INSERT INTO person (fname, lname, birth_date)
+VALUES
+    ('Billy Bob', 'Thornton', '1955-08-04'),
+    ('James Eugene', 'Carrey', '1962-01-17'),
+    ('Walter Bruce', 'Willis', '1955-03-19'),
+    ('Arnold Alois', 'Schwarzenegger', '1947-07-30'),
+    ('Kurt Vogel', 'Russell', '1951-03-17'),
+    ('Leonardo Wilhelm', 'DiCaprio', '1974-11-11'),
+    ('Thom Jeffrey', 'Hanks', '1956-07-09'),
+    ('Rutger Oelsen', 'Hauer', '1944-01-23'),
+    ('Mickey', 'Rourke', '1952-09-16'),
+    ('Sylvester Enzio', 'Stallone', '1946-06-06');
+
+UPDATE person SET death_date = '2019-07-19' WHERE lname = 'Hauer';
+
+INSERT INTO actor (person_id, biography, oscar)
+VALUES
+    (41, 'Billy Bob biography...', TRUE),
+    (42, 'Jim Carrey biography...', FALSE),
+    (43, 'Bruce Willis biography...', FALSE),
+    (44, 'Arnold biography...', FALSE),
+    (45, 'Kurt Russel biography...', FALSE),
+    (46, 'DiCaprio biography...', TRUE),
+    (47, 'Tom Hanks biography...', TRUE),
+    (48, 'Ruger Hauer biography...', FALSE),
+    (49, 'Mickey Rourke biography...', FALSE),
+    (50, 'Stallone biography...', FALSE);
+
+INSERT INTO translation (name)
+VALUES
+    ('English'),
+    ('German'),
+    ('Russian'),
+    ('Spanish'),
+    ('Indian');
+
+
+INSERT INTO genre (name)
+VALUES
+    ('Action'),
+    ('Adventure'),
+    ('Comedy'),
+    ('Crime'),
+    ('Drama'),
+    ('Epics'),
+    ('Horror'),
+    ('Science fiction'),
+    ('Westerns'),
+    ('War');
+
+INSERT INTO person (fname, lname, birth_date)
+VALUES
+    ('Steven Allan', 'Spielberg', '1946-12-18'),
+    ('Quentin Jerome', 'Tarantino', '1963-03-27'),
+    ('Christopher Edward', 'Nolan', '1970-07-30'),
+    ('James Francis', 'Cameron', '1954-08-16');
+
+INSERT INTO film (producer_id, country_id, name, description, duration, release_date)
+VALUES
+    (51, 1, 'The Terminal', 'The Terminal description', '2:9:0', '2004-06-09'),
+    (52, 1, 'The Hateful Eight', 'The Hateful Eight description', '2:47:0', '2016-01-14'),
+    (53, 1, 'Inception', 'Inception description', '2:28:0', '2010-07-22'),
+    (54, 1, 'The Terminator', 'The Terminator description', '1:47:0', '1984-10-26'),
+    (50, 1, 'The Expendables', 'The Expendables description', '1:47:0', '2010-08-07');

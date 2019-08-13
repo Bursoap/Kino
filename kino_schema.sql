@@ -69,7 +69,7 @@ CREATE TABLE actor (
     id INT UNSIGNED AUTO_INCREMENT,
     person_id INT UNSIGNED NOT NULL,
     biography TEXT,
-    oscar BOOLEAN NOT NULL,
+    oscar BOOLEAN NOT NULL DEFAULT FALSE,
     CONSTRAINT pk_actor PRIMARY KEY (id),
     CONSTRAINT fk_person_actor FOREIGN KEY (person_id) REFERENCES person (id),
     CONSTRAINT unique_person_actor UNIQUE (person_id)
@@ -82,7 +82,7 @@ CREATE TABLE employee (
     dept_id INT UNSIGNED NOT NULL,
     title VARCHAR(100) NOT NULL,
     salary DOUBLE(8, 2) NOT NULL,
-    active BOOLEAN NOT NULL,
+    active BOOLEAN NOT NULL DEFAULT TRUE,
     employment_date DATE NOT NULL DEFAULT CURRENT_DATE,
     dismiss_date DATE,
     CONSTRAINT pk_employee PRIMARY KEY (id),

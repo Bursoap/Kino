@@ -231,15 +231,6 @@ VALUES
     (49, 'Mickey Rourke biography...', FALSE),
     (50, 'Stallone biography...', FALSE);
 
-INSERT INTO translation (name)
-VALUES
-    ('English'),
-    ('German'),
-    ('Russian'),
-    ('Spanish'),
-    ('Indian');
-
-
 INSERT INTO genre (name)
 VALUES
     ('Action'),
@@ -267,3 +258,54 @@ VALUES
     (53, 1, 'Inception', 'Inception description', '2:28:0', '2010-07-22'),
     (54, 1, 'The Terminator', 'The Terminator description', '1:47:0', '1984-10-26'),
     (50, 1, 'The Expendables', 'The Expendables description', '1:47:0', '2010-08-07');
+
+INSERT INTO translation (name)
+VALUES
+    ('English'),
+    ('German'),
+    ('Russian'),
+    ('Spanish'),
+    ('Indian');
+
+INSERT INTO copy (film_id, office_id, translation_id, price, stock)
+VALUES
+    (1, 1, 1, 12.0, 5),  /* The Terminal */
+    (1, 1, 2, 15.0, 1),
+    (1, 1, 3, 15.0, 1),
+    (1, 2, 1, 10.0, 3),
+    (1, 2, 3, 15.0, 1),
+    (1, 3, 1, 10.0, 4),
+    (1, 3, 4, 15.0, 1),
+    (2, 1, 1, 12.0, 5),  /* The Hateful Eight */
+    (2, 1, 2, 15.0, 1),
+    (2, 1, 3, 15.0, 2),
+    (2, 1, 4, 15.0, 1),
+    (2, 2, 1, 10.0, 2),
+    (2, 2, 5, 20.0, 1),
+    (2, 3, 1, 10.0, 3),
+    (2, 3, 3, 15.0, 1),
+    (3, 1, 1, 10.0, 2),  /* Inception */
+    (3, 1, 3, 15.0, 1),
+    (3, 2, 1, 10.0, 2),
+    (3, 2, 2, 15.0, 1),
+    (3, 3, 1, 10.0, 1),
+    (3, 3, 5, 15.0, 1),
+    (4, 1, 1, 10.0, 3),  /* The Terminator */
+    (4, 1, 2, 15.0, 1),
+    (4, 1, 3, 15.0, 1),
+    (4, 1, 4, 15.0, 1),
+    (4, 1, 5, 15.0, 1),
+    (4, 2, 1, 10.0, 2),
+    (4, 2, 3, 15.0, 1),
+    (4, 3, 1, 10.0, 2),
+    (4, 3, 2, 15.0, 1),
+    (5, 1, 1, 12.0, 5),  /* The Expendables */
+    (5, 1, 2, 15.0, 1),
+    (5, 1, 3, 15.0, 1),
+    (5, 1, 4, 15.0, 1),
+    (5, 1, 5, 15.0, 1),
+    (5, 2, 1, 12.0, 3),
+    (5, 2, 4, 15.0, 1),
+    (5, 3, 1, 12.0, 3),
+    (5, 3, 2, 15.0, 1),
+    (5, 3, 5, 15.0, 1);

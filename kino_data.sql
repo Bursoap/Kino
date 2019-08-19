@@ -1,3 +1,5 @@
+USE movie_rental;
+
 INSERT INTO country (name)
 VALUES
     ('USA'),
@@ -205,8 +207,8 @@ VALUES
 
 INSERT INTO person (first_name, last_name, birth_date)
 VALUES
-    ('Billy Bob', 'Thornton', '1955-08-04'),
-    ('James Eugene', 'Carrey', '1962-01-17'),
+    ('Tim', 'Roth', '1961-05-14'),
+    ('Samuel Leroy', 'Jackson', '1948-12-21'),
     ('Walter Bruce', 'Willis', '1955-03-19'),
     ('Arnold Alois', 'Schwarzenegger', '1947-07-30'),
     ('Kurt Vogel', 'Russell', '1951-03-17'),
@@ -220,8 +222,8 @@ UPDATE person SET death_date = '2019-07-19' WHERE last_name = 'Hauer';
 
 INSERT INTO actor (person_id, biography, oscar)
 VALUES
-    (41, 'Billy Bob biography...', TRUE),
-    (42, 'Jim Carrey biography...', FALSE),
+    (41, 'Tim Roth biography...', FALSE),
+    (42, 'Samuel Leroy Jackson biography...', FALSE),
     (43, 'Bruce Willis biography...', FALSE),
     (44, 'Arnold biography...', FALSE),
     (45, 'Kurt Russel biography...', FALSE),
@@ -230,19 +232,6 @@ VALUES
     (48, 'Ruger Hauer biography...', FALSE),
     (49, 'Mickey Rourke biography...', FALSE),
     (50, 'Stallone biography...', FALSE);
-
-INSERT INTO genre (name)
-VALUES
-    ('Action'),
-    ('Adventure'),
-    ('Comedy'),
-    ('Crime'),
-    ('Drama'),
-    ('Epics'),
-    ('Horror'),
-    ('Science fiction'),
-    ('Westerns'),
-    ('War');
 
 INSERT INTO person (first_name, last_name, birth_date)
 VALUES
@@ -258,6 +247,47 @@ VALUES
     (53, 1, 'Inception', 'Inception description', '2:28:0', '2010-07-22'),
     (54, 1, 'The Terminator', 'The Terminator description', '1:47:0', '1984-10-26'),
     (50, 1, 'The Expendables', 'The Expendables description', '1:47:0', '2010-08-07');
+
+INSERT INTO film_actor (film_id, actor_id)
+VALUES
+    (1, 7),
+    (2, 1),
+    (2, 2),
+    (2, 5),
+    (3, 6),
+    (4, 4),
+    (5, 3),
+    (5, 4),
+    (5, 9),
+    (5, 10);
+
+INSERT INTO genre (name)
+VALUES
+    ('Action'),
+    ('Adventure'),
+    ('Comedy'),
+    ('Crime'),
+    ('Drama'),
+    ('Epics'),
+    ('Horror'),
+    ('Science fiction'),
+    ('Westerns'),
+    ('War');
+
+INSERT INTO film_genre (film_id, genre_id)
+VALUES
+    (1, 3),
+    (1, 5),
+    (2, 1),
+    (2, 4),
+    (2, 9),
+    (3, 1),
+    (3, 8),
+    (4, 1),
+    (4, 8),
+    (5, 1),
+    (5, 3),
+    (5, 10);
 
 INSERT INTO translation (name)
 VALUES

@@ -339,3 +339,10 @@ VALUES
     (5, 3, 1, 12.0, 3),
     (5, 3, 2, 15.0, 1),
     (5, 3, 5, 15.0, 1);
+
+INSERT INTO package (name, days, price)
+VALUES
+    ('base', 7, 0.0),
+    ('middle', 14, 5.0),
+    ('max', 30, 10.0);
+

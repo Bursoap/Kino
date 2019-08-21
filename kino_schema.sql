@@ -161,19 +161,44 @@ CREATE TABLE copy (
     CONSTRAINT unique_film_office_translation UNIQUE (film_id, office_id, translation_id)
 );
 
+CREATE TABLE package (
+    id INT UNSIGNED AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    days INT UNSIGNED NOT NULL,
+    price DOUBLE(4, 2) NOT NULL,
+    CONSTRAINT pk_package PRIMARY KEY (id),
+    CONSTRAINT unique_days_price UNIQUE (name)
+);
+
 CREATE TABLE deal (
     id INT UNSIGNED AUTO_INCREMENT,
     client_id INT UNSIGNED NOT NULL,
     office_id INT UNSIGNED NOT NULL,
     open_emp_id INT UNSIGNED NOT NULL,
-    total_earnings DOUBLE(8, 2) NOT NULL,
-    start_date DATE NOT NULL,
+    package_id INT UNSIGNED NOT NULL DEFAULT 1,
+    total_earnings DOUBLE(8, 2) DEFAULT 0.0,
+    start_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    valid_until_date DATE NOT NULL,
     end_date DATE,
     CONSTRAINT pk_deal PRIMARY KEY (id),
     CONSTRAINT fk_client_deal FOREIGN KEY (client_id) REFERENCES client (id),
     CONSTRAINT fk_office_deal FOREIGN KEY (office_id) REFERENCES office (id),
-    CONSTRAINT fk_employee_deal FOREIGN KEY (open_emp_id) REFERENCES employee (id)
+    CONSTRAINT fk_employee_deal FOREIGN KEY (open_emp_id) REFERENCES employee (id),
+    CONSTRAINT fk_package_deal FOREIGN KEY (package_id) REFERENCES package (id)
 );
+
+CREATE TRIGGER before_create_deal BEFORE INSERT ON deal
+    FOR EACH ROW BEGIN
+
+        DECLARE tmp_package_days INT DEFAULT 0;
+
+        SELECT days
+        FROM package
+        WHERE id = NEW.package_id
+        INTO tmp_package_days;
+
+        SET valid_until_date = DATE_ADD(start_date, INTERVAL tmp_package_days DAY);
+    END;
 
 CREATE TABLE deal_copy (
     deal_id INT UNSIGNED NOT NULL,
@@ -182,3 +207,18 @@ CREATE TABLE deal_copy (
     CONSTRAINT fk_deal_deal_copy FOREIGN KEY (deal_id) REFERENCES deal (id),
     CONSTRAINT fk_copy_deal_copy FOREIGN KEY (copy_id) REFERENCES copy (id)
 );
+
+CREATE TRIGGER after_create_deal_copy AFTER INSERT ON deal_copy
+    FOR EACH ROW BEGIN
+
+        DECLARE tmp_price DOUBLE(4, 2) DEFAULT 0.0;
+
+        SELECT price
+        FROM copy
+        WHERE id = NEW.copy_id
+        INTO tmp_price;
+
+        UPDATE deal
+        SET total_earnings = total_earnings + tmp_price
+        WHERE id = NEW.deal_id;
+    END;

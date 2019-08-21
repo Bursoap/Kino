@@ -68,7 +68,7 @@ GROUP BY f.id
 HAVING COUNT(DISTINCT o.id) >= 2;
 
 
-SELECT CONCAT(p.first_name, p.last_name) employee_name,
+SELECT CONCAT(p.first_name, ' ',  p.last_name) employee_name,
        e.title employee_title,
        o.name office_name,
        d.name department_name,
@@ -85,3 +85,22 @@ WHERE 5 <= (SELECT COUNT(*)
             FROM deal
             WHERE open_emp_id = e.id
               AND MONTH(start_date)=MONTH(CURRENT_DATE()));
+
+
+SELECT CONCAT(p.first_name, ' ', p.last_name) head_name,
+       o.name office_name,
+       e.salary,
+       COUNT(DISTINCT d.id) not_returned,
+       (5 * not_returned) fine,
+       (e.salary - fine) difference
+FROM office o
+    INNER JOIN employee e
+        ON o.office_head_id = e.office_id
+    INNER JOIN person p
+        ON e.person_id = p.id
+    INNER JOIN deal d
+        ON o.id = d.office_id
+WHERE MONTH(d.start_date) = MONTH(CURRENT_DATE())
+  AND IFNULL(d.end_date, CURRENT_DATE()) > valid_until_date
+GROUP BY e.id
+HAVING COUNT(DISTINCT d.id) >= 1;

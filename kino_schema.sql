@@ -59,7 +59,7 @@ CREATE TABLE client (
     person_id INT UNSIGNED NOT NULL,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     email VARCHAR(100),
-    active BOOLEAN NOT NULL,
+    active BOOLEAN NOT NULL DEFAULT TRUE,
     CONSTRAINT pk_client PRIMARY KEY (id),
     CONSTRAINT fk_person_client FOREIGN KEY (person_id) REFERENCES person (id),
     CONSTRAINT unique_person_client UNIQUE (person_id)

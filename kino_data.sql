@@ -82,14 +82,14 @@ VALUES
 # employee
 INSERT INTO employee (person_id, office_id, dept_id, title, salary, employment_date)
 VALUES
-    (1, 1, 1, 'Boss', 5000.00, '1994-02-01'),
+    (1, 1, 1, 'Boss', 5000.00, '1994-02-01'), /* California employees */
     (2, 1, 2, 'Manager', 3000.00, '2004-05-07'),
     (3, 1, 3, 'Seller', 2000.00, '2008-09-16'),
     (4, 1, 3, 'Seller', 2000.00, '2009-11-06'),
-    (5, 2, 2, 'Manager', 3000.00, '2005-04-15'),
+    (5, 2, 2, 'Manager', 3000.00, '2005-04-15'), /* Chicago employees */
     (6, 2, 3, 'Seller', 2000.00, '2008-10-07'),
     (7, 2, 3, 'Seller', 2000.00, '2009-08-23'),
-    (8, 3, 2, 'Manager', 3000.00, '2009-12-11'),
+    (8, 3, 2, 'Manager', 3000.00, '2009-12-11'), /* Denver employees */
     (9, 3, 3, 'Seller', 2000.00, '2010-05-17'),
     (10, 3, 3, 'Seller', 2000.00, '2011-07-27');
 
@@ -172,38 +172,38 @@ VALUES
     (48, 'Daniel', 'Colt', '1983-01-28');
 
 # Clients
-INSERT INTO client (person_id, email, active)
+INSERT INTO client (person_id, email)
 VALUES
-    (11, 'client_1_rental@mail.ru', true),
-    (12, 'client_2_rental@mail.ru', true),
-    (13, 'client_3_rental@mail.ru', true),
-    (14, 'client_4_rental@mail.ru', true),
-    (15, 'client_5_rental@mail.ru', true),
-    (16, 'client_6_rental@mail.ru', true),
-    (17, 'client_7_rental@mail.ru', true),
-    (18, 'client_8_rental@mail.ru', true),
-    (19, 'client_9_rental@mail.ru', true),
-    (20, 'client_10_rental@mail.ru', true),
-    (21, 'client_11_rental@mail.ru', true),
-    (22, 'client_12_rental@mail.ru', true),
-    (23, 'client_13_rental@mail.ru', true),
-    (24, 'client_14_rental@mail.ru', true),
-    (25, 'client_15_rental@mail.ru', true),
-    (26, 'client_16_rental@mail.ru', true),
-    (27, 'client_17_rental@mail.ru', true),
-    (28, 'client_18_rental@mail.ru', true),
-    (29, 'client_19_rental@mail.ru', true),
-    (30, 'client_20_rental@mail.ru', true),
-    (31, 'client_21_rental@mail.ru', true),
-    (32, 'client_22_rental@mail.ru', true),
-    (33, 'client_23_rental@mail.ru', true),
-    (34, 'client_24_rental@mail.ru', true),
-    (35, 'client_25_rental@mail.ru', true),
-    (36, 'client_26_rental@mail.ru', true),
-    (37, 'client_27_rental@mail.ru', true),
-    (38, 'client_28_rental@mail.ru', true),
-    (39, 'client_29_rental@mail.ru', true),
-    (40, 'client_30_rental@mail.ru', true);
+    (11, 'client_1_rental@mail.ru'), /* California clients */
+    (12, 'client_2_rental@mail.ru'),
+    (13, 'client_3_rental@mail.ru'),
+    (14, 'client_4_rental@mail.ru'),
+    (15, 'client_5_rental@mail.ru'),
+    (16, 'client_6_rental@mail.ru'),
+    (17, 'client_7_rental@mail.ru'),
+    (18, 'client_8_rental@mail.ru'),
+    (19, 'client_9_rental@mail.ru'),
+    (20, 'client_10_rental@mail.ru'),
+    (21, 'client_11_rental@mail.ru'), /* Chicago clients */
+    (22, 'client_12_rental@mail.ru'),
+    (23, 'client_13_rental@mail.ru'),
+    (24, 'client_14_rental@mail.ru'),
+    (25, 'client_15_rental@mail.ru'),
+    (26, 'client_16_rental@mail.ru'),
+    (27, 'client_17_rental@mail.ru'),
+    (28, 'client_18_rental@mail.ru'),
+    (29, 'client_19_rental@mail.ru'),
+    (30, 'client_20_rental@mail.ru'),
+    (31, 'client_21_rental@mail.ru'), /* Denver clients */
+    (32, 'client_22_rental@mail.ru'),
+    (33, 'client_23_rental@mail.ru'),
+    (34, 'client_24_rental@mail.ru'),
+    (35, 'client_25_rental@mail.ru'),
+    (36, 'client_26_rental@mail.ru'),
+    (37, 'client_27_rental@mail.ru'),
+    (38, 'client_28_rental@mail.ru'),
+    (39, 'client_29_rental@mail.ru'),
+    (40, 'client_30_rental@mail.ru');
 
 INSERT INTO person (first_name, last_name, birth_date)
 VALUES
@@ -346,3 +346,75 @@ VALUES
     ('middle', 14, 5.0),
     ('max', 30, 10.0);
 
+INSERT INTO deal (client_id, office_id, open_emp_id, package_id)
+VALUES
+    (11, 1, 3, 1), /* California deals */
+    (12, 1, 3, 1),
+    (13, 1, 3, 1),
+    (14, 1, 3, 2),
+    (15, 1, 3, 1),
+    (16, 1, 3, 1),
+    (17, 1, 4, 2),
+    (18, 1, 4, 1),
+    (19, 1, 4, 2),
+    (20, 1, 4, 3),
+    (21, 2, 6, 1), /* Chicago deals */
+    (22, 2, 6, 1),
+    (23, 2, 6, 2),
+    (24, 2, 6, 1),
+    (25, 2, 6, 1),
+    (26, 2, 7, 2),
+    (27, 2, 7, 1),
+    (28, 2, 7, 1),
+    (29, 2, 7, 1),
+    (30, 2, 7, 3),
+    (31, 2, 9, 1), /* Denver deals */
+    (32, 2, 9, 1),
+    (33, 2, 9, 1),
+    (34, 2, 10, 2),
+    (35, 2, 10, 1),
+    (36, 2, 10, 1),
+    (37, 2, 10, 2),
+    (38, 2, 10, 1),
+    (39, 2, 10, 1),
+    (40, 2, 10, 3);
+
+INSERT INTO deal_copy (deal_id, copy_id)
+VALUES
+    (1, 1), /* California */
+    (2, 8),
+    (3, 16),
+    (4, 22),
+    (5, 31),
+    (6, 1),
+    (7, 31),
+    (8, 8),
+    (9, 2),
+    (10, 1),
+    (10, 8), /* two films for one deal */
+    (11, 4), /* Chicago */
+    (12, 12),
+    (13, 18),
+    (14, 27),
+    (15, 36),
+    (16, 36),
+    (17, 4),
+    (18, 28),
+    (19, 12),
+    (20, 4),
+    (20, 27), /* two films for one deal */
+    (21, 6), /* Denver */
+    (22, 14),
+    (23, 20),
+    (24, 29),
+    (25, 38),
+    (26, 39),
+    (27, 6),
+    (28, 7),
+    (29, 14),
+    (30, 21),
+    (30, 40); /* two films for one deal */
+
+INSERT INTO rating (film_id, client_id, rating)
+VALUES
+    (),

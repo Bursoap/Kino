@@ -177,7 +177,7 @@ CREATE TABLE deal (
     open_emp_id INT UNSIGNED NOT NULL,
     package_id INT UNSIGNED NOT NULL DEFAULT 1,
     total_earnings DOUBLE(8, 2) DEFAULT 0.0,
-    start_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    start_date DATE NOT NULL,
     valid_until_date DATE NOT NULL,
     end_date DATE,
     CONSTRAINT pk_deal PRIMARY KEY (id),
@@ -197,7 +197,8 @@ CREATE TRIGGER before_create_deal BEFORE INSERT ON deal
         WHERE id = NEW.package_id
         INTO tmp_package_days;
 
-        SET valid_until_date = DATE_ADD(start_date, INTERVAL tmp_package_days DAY);
+        SET NEW.start_date = IF(NEW.start_date, NEW.start_date, CURRENT_DATE());
+        SET NEW.valid_until_date = DATE_ADD(NEW.start_date, INTERVAL tmp_package_days DAY);
     END;
 
 CREATE TABLE deal_copy (

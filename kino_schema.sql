@@ -1,4 +1,4 @@
-CREATE DATABASE movie_rental;
+CREATE DATABASE IF NOT EXISTS movie_rental;
 
 USE movie_rental;
 
@@ -213,13 +213,25 @@ CREATE TRIGGER after_create_deal_copy AFTER INSERT ON deal_copy
     FOR EACH ROW BEGIN
 
         DECLARE tmp_price DOUBLE(4, 2) DEFAULT 0.0;
+        DECLARE tmp_package_id INT UNSIGNED DEFAULT 1;
+        DECLARE tmp_package_price DOUBLE(4, 2) DEFAULT 0.0;
 
         SELECT price
         FROM copy
         WHERE id = NEW.copy_id
         INTO tmp_price;
 
+        SELECT package_id
+        FROM deal
+        WHERE id = NEW.deal_id
+        INTO tmp_package_id;
+
+        SELECT price
+        FROM package
+        WHERE id = tmp_package_id
+        INTO tmp_package_price;
+
         UPDATE deal
-        SET total_earnings = total_earnings + tmp_price
+        SET total_earnings = total_earnings + tmp_price + tmp_package_price
         WHERE id = NEW.deal_id;
     END;

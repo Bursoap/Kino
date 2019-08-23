@@ -87,7 +87,7 @@ WHERE 5 <= (SELECT COUNT(*)
 
 /* Fine for office heads which have invalid deals this month */
 SELECT CONCAT(p.first_name, ' ', p.last_name) head_name,
-       (SELECT name FROM office WHERE office_head_id = e.id) office_name,
+       o.name office_name,
        e.salary,
        COUNT(DISTINCT d.id) not_returned,
        (COUNT(DISTINCT d.id) * 5) fine,
@@ -101,5 +101,5 @@ FROM employee e
         ON d.office_id = o.id
 WHERE MONTH(d.start_date) = MONTH(CURRENT_DATE())
   AND IFNULL(d.end_date, CURRENT_DATE()) > d.valid_until_date
-GROUP BY e.id
+GROUP BY o.id, e.id
 HAVING COUNT(DISTINCT d.id) >= 1;

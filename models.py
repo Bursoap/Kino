@@ -1,7 +1,7 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, \
-    Table
-from sqlalchemy.orm import relationship
+    Table, Date, TIMESTAMP, func, Boolean
+from sqlalchemy.orm import relationship, backref
 
 engine = create_engine('mysql://kino:kino@172.17.0.2/movie_rental', echo=True)
 
@@ -41,7 +41,7 @@ class Office(Base):
     id = Column(Integer, primary_key=True)
     location_id = Column(Integer, ForeignKey('location.id'), nullable=False)
     location = relationship('Location', backref='offices')
-    office_head_id = Column(ForeignKey('employee.id'))
+    office_head_id = Column(Integer, ForeignKey('employee.id'))
     office_head = relationship('Employee', backref='subordinate_offices')
     name = Column(String(50), nullable=False, unique=True)
     departments = relationship(
@@ -61,3 +61,26 @@ class Department(Base):
         secondary=office_department,
         back_populates='departments'
     )
+
+
+class Person(Base):
+    __tablename__ = 'person'
+
+    id = Column(Integer, primary_key=True)
+    location_id = Column(Integer, ForeignKey('location.id'))
+    location = relationship('Location', backref='persons')
+    first_name = Column(String(50), nullable=False)
+    last_name = Column(String(50), nullable=False)
+    birth_date = Column(Date, nullable=False)
+    death_date = Column(Date)
+
+
+class Client(Base):
+    __tablename__ = 'client'
+
+    id = Column(Integer, primary_key=True)
+    person_id = Column(Integer, ForeignKey('person.id'))
+    person = relationship('Person', backref=backref('client', uselist=False))
+    created = Column(TIMESTAMP, nullable=False, server_default=func.now())
+    email = Column(String(100))
+    active = Column(Boolean, nullable=False, default=True)

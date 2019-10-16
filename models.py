@@ -1,7 +1,7 @@
 from sqlalchemy.dialects.mysql import DOUBLE
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, \
-    Table, Date, TIMESTAMP, func, Boolean, Time
+    Table, Date, TIMESTAMP, func, Boolean, Time, UniqueConstraint
 from sqlalchemy.orm import relationship, backref
 
 engine = create_engine('mysql://kino:kino@172.17.0.2/movie_rental', echo=True)
@@ -80,31 +80,6 @@ class Person(Base):
     death_date = Column(Date)
 
 
-class Client(Base):
-    __tablename__ = 'client'
-
-    id = Column(Integer, primary_key=True)
-    person_id = Column(Integer, ForeignKey('person.id'),
-                       nullable=False, unique=True)
-    person = relationship('Person', backref=backref('client', uselist=False))
-
-    created = Column(TIMESTAMP, nullable=False, server_default=func.now())
-    email = Column(String(100))
-    active = Column(Boolean, nullable=False, default=True)
-
-
-class Actor(Base):
-    __tablename__ = 'actor'
-
-    id = Column(Integer, primary_key=True)
-    person_id = Column(Integer, ForeignKey('person.id'),
-                       nullable=False, unique=True)
-    person = relationship('Person', backref=backref('actor', uselist=False))
-
-    biography = Column(String(10000))
-    oscar = Column(Boolean, nullable=False, default=True)
-
-
 class Employee(Base):
     __tablename__ = 'employee'
 
@@ -147,6 +122,56 @@ class Genre(Base):
     name = Column(String(50), nullable=False, unique=True)
 
 
+film_actor = Table(
+    'film_actor',
+    Base.metadata,
+    Column('film_id', Integer, ForeignKey('film.id')),
+    Column('actor_id', Integer, ForeignKey('actor.id'))
+)
+
+
+class Actor(Base):
+    __tablename__ = 'actor'
+
+    id = Column(Integer, primary_key=True)
+    person_id = Column(Integer, ForeignKey('person.id'),
+                       nullable=False, unique=True)
+    person = relationship('Person', backref=backref('actor', uselist=False))
+
+    films = relationship(
+        'Film',
+        secondary=film_actor,
+        back_populates='actors'
+    )
+
+    biography = Column(String(10000))
+    oscar = Column(Boolean, nullable=False, default=True)
+
+
+class Rating(Base):
+    __tablename__ = 'rating'
+
+    film_id = Column(Integer, ForeignKey('film.id'), nullable=False)
+    client_id = Column(Integer, ForeignKey('client.id'), nullable=False)
+    rating = Column(DOUBLE(precision=2, scale=1), nullable=False)
+    film = relationship('Film', back_populates='ratings')
+    client = relationship('Client', back_populates='films_ratings')
+
+
+class Client(Base):
+    __tablename__ = 'client'
+
+    id = Column(Integer, primary_key=True)
+    person_id = Column(Integer, ForeignKey('person.id'),
+                       nullable=False, unique=True)
+    person = relationship('Person', backref=backref('client', uselist=False))
+    films_ratings = relationship('Rating', back_populates='client')
+
+    created = Column(TIMESTAMP, nullable=False, server_default=func.now())
+    email = Column(String(100))
+    active = Column(Boolean, nullable=False, default=True)
+
+
 class Film(Base):
     __tablename__ = 'film'
 
@@ -163,7 +188,55 @@ class Film(Base):
         back_populates='films'
     )
 
+    actors = relationship(
+        'Actor',
+        secondary=film_actor,
+        back_populates='films'
+    )
+
+    ratings = relationship('Ratings', back_populates='film')
+
     name = Column(String(50), nullable=False)
     description = Column(String(10000))
     duration = Column(Time, nullable=False)
     release_date = Column(Date, nullable=False)
+
+
+class Translation(Base):
+    __tablename__ = 'translation'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), nullable=False, unique=True)
+
+
+class Copy(Base):
+    __tablename__ = 'copy'
+
+    id = Column(Integer, primary_key=True)
+    film_id = Column(Integer, ForeignKey('film.id'), nullable=False)
+    film = relationship('Film', back_populates='copies')
+
+    office_id = Column(Integer, ForeignKey('office.id'), nullable=False)
+    office = relationship('Office', back_populates='copies')
+
+    translation_id = Column(Integer, ForeignKey('translation.id'),
+                            nullable=False)
+    price = Column(DOUBLE(precision=4, scale=2), nullable=False)
+    stock = Column(Integer, nullable=False)
+    __table_args__ = (
+        UniqueConstraint(
+            'film_id',
+            'office_id',
+            'tarnslation_id',
+            name='unique_film_office_translation'
+        ),
+    )
+
+
+class Package(Base):
+    __tablename__ = 'package'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), nullable=False)
+    days = Column(Integer, nullable=False, unique=True)
+    price = Column(DOUBLE(precision=4, scale=2), nullable=False)

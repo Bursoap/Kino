@@ -1,5 +1,3 @@
-from decimal import Decimal
-
 import sqlalchemy as sa
 from sqlalchemy.dialects.mysql import DOUBLE
 from sqlalchemy.ext.declarative import declarative_base
@@ -21,7 +19,8 @@ class Location(Base):
     __tablename__ = 'location'
 
     id = sa.Column(sa.Integer, primary_key=True)
-    country_id = sa.Column(sa.Integer, sa.ForeignKey('country.id'), nullable=False)
+    country_id = sa.Column(sa.Integer, sa.ForeignKey('country.id'),
+                           nullable=False)
     country = relationship('Country', backref='locations')
 
     state = sa.Column(sa.String(100))
@@ -42,10 +41,12 @@ class Office(Base):
     __tablename__ = 'office'
 
     id = sa.Column(sa.Integer, primary_key=True)
-    location_id = sa.Column(sa.Integer, sa.ForeignKey('location.id'), nullable=False)
+    location_id = sa.Column(sa.Integer, sa.ForeignKey('location.id'),
+                            nullable=False)
     location = relationship('Location', backref='offices')
 
-    office_head_id = sa.Column(sa.Integer, sa.ForeignKey('employee.id', use_alter=True))
+    office_head_id = sa.Column(sa.Integer, sa.ForeignKey('employee.id',
+                                                         use_alter=True))
     office_head = relationship('Employee', backref='subordinate_offices')
 
     name = sa.Column(sa.String(50), nullable=False, unique=True)
@@ -86,18 +87,20 @@ class Employee(Base):
 
     id = sa.Column(sa.Integer, primary_key=True)
     person_id = sa.Column(sa.Integer, sa.ForeignKey('person.id'),
-                       nullable=False, unique=True)
+                          nullable=False, unique=True)
     person = relationship('Person', backref=backref('employee', uselist=False))
 
-    office_id = sa.Column(sa.Integer, sa.ForeignKey('office.id'), nullable=False)
+    office_id = sa.Column(sa.Integer, sa.ForeignKey('office.id'),
+                          nullable=False)
     office = relationship('Office', backref='employees')
 
-    dept_id = sa.Column(sa.Integer, sa.ForeignKey('department.id'), nullable=False)
+    dept_id = sa.Column(sa.Integer, sa.ForeignKey('department.id'),
+                        nullable=False)
     department = relationship('Department', backref='employees')
 
     title = sa.Column(sa.String(100), nullable=False)
     salary = sa.Column(DOUBLE(precision=8, scale=2), nullable=False)
-    active = sa.Column(sa.Boolean, nullable=False, default=True)
+    active = sa.Column(sa.Boolean, nullable=False, server_default=sa.text('1'))
     employment_date = sa.Column(sa.Date, nullable=False)
     dismiss_date = sa.Column(sa.Date)
 
@@ -136,7 +139,7 @@ class Actor(Base):
 
     id = sa.Column(sa.Integer, primary_key=True)
     person_id = sa.Column(sa.Integer, sa.ForeignKey('person.id'),
-                       nullable=False, unique=True)
+                          nullable=False, unique=True)
     person = relationship('Person', backref=backref('actor', uselist=False))
 
     films = relationship(
@@ -146,17 +149,19 @@ class Actor(Base):
     )
 
     biography = sa.Column(sa.String(10000))
-    oscar = sa.Column(sa.Boolean, nullable=False, default=True)
+    oscar = sa.Column(sa.Boolean, nullable=False, server_default=sa.text('0'))
 
 
 class Film(Base):
     __tablename__ = 'film'
 
     id = sa.Column(sa.Integer, primary_key=True)
-    producer_id = sa.Column(sa.Integer, sa.ForeignKey('person.id'), nullable=False)
+    producer_id = sa.Column(sa.Integer, sa.ForeignKey('person.id'),
+                            nullable=False)
     producer = relationship('Person', backref='produced_films')
 
-    country_id = sa.Column(sa.Integer, sa.ForeignKey('country.id'), nullable=False)
+    country_id = sa.Column(sa.Integer, sa.ForeignKey('country.id'),
+                           nullable=False)
     country = relationship('Country', backref='films')
 
     genres = relationship(
@@ -185,7 +190,8 @@ class Rating(Base):
     film_id = sa.Column(sa.Integer, sa.ForeignKey('film.id'), nullable=False)
     film = relationship('Film', backref='ratings')
 
-    client_id = sa.Column(sa.Integer, sa.ForeignKey('client.id'), nullable=False)
+    client_id = sa.Column(sa.Integer, sa.ForeignKey('client.id'),
+                          nullable=False)
     client = relationship('Client', backref='films_ratings')
 
     rating = sa.Column(DOUBLE(precision=2, scale=1), nullable=False)
@@ -212,12 +218,13 @@ class Client(Base):
 
     id = sa.Column(sa.Integer, primary_key=True)
     person_id = sa.Column(sa.Integer, sa.ForeignKey('person.id'),
-                       nullable=False, unique=True)
+                          nullable=False, unique=True)
     person = relationship('Person', backref=backref('client', uselist=False))
 
-    created = sa.Column(sa.TIMESTAMP, nullable=False, server_default=sa.func.now())
+    created = sa.Column(sa.TIMESTAMP, nullable=False,
+                        server_default=sa.func.now())
     email = sa.Column(sa.String(100))
-    active = sa.Column(sa.Boolean, nullable=False, default=True)
+    active = sa.Column(sa.Boolean, nullable=False, server_default=sa.text('1'))
 
 
 deal_copy = sa.Table(
@@ -235,11 +242,12 @@ class Copy(Base):
     film_id = sa.Column(sa.Integer, sa.ForeignKey('film.id'), nullable=False)
     film = relationship('Film', backref='copies')
 
-    office_id = sa.Column(sa.Integer, sa.ForeignKey('office.id'), nullable=False)
+    office_id = sa.Column(sa.Integer, sa.ForeignKey('office.id'),
+                          nullable=False)
     office = relationship('Office', backref='copies')
 
     translation_id = sa.Column(sa.Integer, sa.ForeignKey('translation.id'),
-                            nullable=False)
+                               nullable=False)
     translation = relationship('Translation', backref='copies')
 
     deals = relationship(
@@ -264,17 +272,20 @@ class Deal(Base):
     __tablename__ = 'deal'
 
     id = sa.Column(sa.Integer, primary_key=True)
-    client_id = sa.Column(sa.Integer, sa.ForeignKey('client.id'), nullable=False)
+    client_id = sa.Column(sa.Integer, sa.ForeignKey('client.id'),
+                          nullable=False)
     client = relationship('Client', backref='deals')
 
-    office_id = sa.Column(sa.Integer, sa.ForeignKey('office.id'), nullable=False)
+    office_id = sa.Column(sa.Integer, sa.ForeignKey('office.id'),
+                          nullable=False)
     office = relationship('Office', backref='deals')
 
-    employee_id = sa.Column(sa.Integer, sa.ForeignKey('employee.id'), nullable=False)
+    employee_id = sa.Column(sa.Integer, sa.ForeignKey('employee.id'),
+                            nullable=False)
     employee = relationship('Employee', backref='deals')
 
     package_id = sa.Column(sa.Integer, sa.ForeignKey('package.id'),
-                        nullable=False, default=1)
+                           nullable=False, server_default=sa.text('1'))
     package = relationship('Package', backref='deals')
 
     copies = relationship(
@@ -283,7 +294,8 @@ class Deal(Base):
         back_populates='deals'
     )
 
-    total_earnings = sa.Column(DOUBLE(precision=8, scale=2), default=Decimal(0.0))
+    total_earnings = sa.Column(DOUBLE(precision=8, scale=2),
+                               server_default=sa.text('0.0'))
     start_date = sa.Column(sa.Date, nullable=False)
     valid_until_date = sa.Column(sa.Date, nullable=False)
     end_date = sa.Column(sa.Date)
